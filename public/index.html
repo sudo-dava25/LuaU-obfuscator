@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>LuaU VM Obfuscator</title>
-<script src="https://unpkg.com/lucide@latest"></script>
+<title>LuaU VM Obfuscator | Lumina Core</title>
+<script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
 <style>
   * {
     margin: 0;
@@ -13,7 +13,7 @@
   }
 
   body {
-    background: linear-gradient(145deg, #f6f9fc 0%, #eef2f8 100%);
+    background: linear-gradient(145deg, #f4f9fe 0%, #e9f0f8 100%);
     color: #1a2c3e;
     font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Fira Code', monospace;
     min-height: 100vh;
@@ -323,16 +323,16 @@
 <body>
 <header>
   <div class="logo-area">
-    <h1><i data-lucide="zap" class="lucide-icon"></i> VM·OBFUSCATOR</h1>
+    <h1><i data-lucide="zap"></i> VM·OBFUSCATOR</h1>
     <div class="badge">LuaU Core</div>
     <div class="vm-chip">VM-based · Server-side</div>
   </div>
-  <span style="font-size: 0.75rem; opacity: 0.8;"><i data-lucide="lock" class="lucide-icon"></i> opaque bytecode</span>
+  <span style="font-size: 0.75rem; opacity: 0.8;"><i data-lucide="lock"></i> opaque bytecode</span>
 </header>
 <main>
   <div class="pane">
     <div class="pane-header">
-      <span><i data-lucide="file-text" class="lucide-icon pane-icon"></i> INPUT — Luau Source</span>
+      <span><i data-lucide="file-text" class="pane-icon"></i> INPUT — Luau Source</span>
       <span style="font-size:0.7rem; background: none;">raw script</span>
     </div>
     <textarea id="inputCode" placeholder="-- [[ Paste your Luau / Roblox script here ]] --&#10;local Players = game:GetService(&quot;Players&quot;)&#10;function onPlayerAdded(player)&#10;    print(&quot;Hello &quot; .. player.Name)&#10;end&#10;Players.PlayerAdded:Connect(onPlayerAdded)"></textarea>
@@ -345,7 +345,7 @@
 
   <div class="pane">
     <div class="pane-header">
-      <span><i data-lucide="lock-keyhole" class="lucide-icon pane-icon"></i> OUTPUT — VM Obfuscated</span>
+      <span><i data-lucide="lock-keyhole" class="pane-icon"></i> OUTPUT — VM Obfuscated</span>
       <span style="font-size:0.7rem;">execution ready</span>
     </div>
     <textarea id="outputCode" placeholder="[ obfuscated code will appear here ]" readonly></textarea>
@@ -360,7 +360,6 @@
   <i data-lucide="cpu"></i> VM obfuscation | preserves logic | server-side processing
 </div>
 <script>
-  // initialize lucide icons after DOM ready
   document.addEventListener('DOMContentLoaded', function() {
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
