@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>LuaU VM Obfuscator | Lumina Core</title>
+<title>LuaU VM Obfuscator | Nexus Core</title>
 <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
 <style>
   * {
@@ -13,9 +13,9 @@
   }
 
   body {
-    background: linear-gradient(145deg, #f4f9fe 0%, #e9f0f8 100%);
+    background: linear-gradient(135deg, #f0f7ff 0%, #e2ecf9 100%);
     color: #1a2c3e;
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Fira Code', monospace;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', monospace;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -26,28 +26,25 @@
     height: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #dce5ec;
+    background: #d0dfec;
     border-radius: 10px;
   }
   ::-webkit-scrollbar-thumb {
-    background: #6c8fb3;
+    background: #5f8db0;
     border-radius: 10px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #4a6f96;
   }
 
   header {
     padding: 20px 28px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(16px);
-    border-bottom: 2px solid #cbdde9;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid #c5d8e8;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 14px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -60,33 +57,38 @@
   }
   header h1 {
     font-size: 1.55rem;
-    font-weight: 700;
-    background: linear-gradient(115deg, #1f6392, #3b82b6);
+    font-weight: 800;
+    background: linear-gradient(115deg, #1a5f8b, #2c7eb0);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    letter-spacing: -0.3px;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
   .badge {
-    background: #e6f0fa;
-    border: 1px solid #b9d0e4;
+    background: #e2edf9;
+    border: 1px solid #b8cee4;
     border-radius: 60px;
     padding: 5px 14px;
     font-size: 0.75rem;
     font-weight: 600;
-    color: #1c5a8b;
+    color: #1a5f8b;
   }
   .vm-chip {
     font-family: monospace;
     font-size: 0.7rem;
-    background: #ecf3f9;
+    background: #e8f0f8;
     padding: 4px 12px;
     border-radius: 40px;
-    color: #2a628f;
+    color: #28638b;
     font-weight: 500;
+  }
+  .lucide-icon {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    vertical-align: middle;
   }
 
   main {
@@ -101,22 +103,21 @@
   }
 
   .pane {
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(2px);
+    background: rgba(255, 255, 255, 0.96);
     border-radius: 32px;
-    border: 1px solid rgba(72, 120, 160, 0.25);
+    border: 1px solid #cde0ef;
     overflow: hidden;
     transition: all 0.25s ease;
-    box-shadow: 0 12px 28px -8px rgba(0, 32, 64, 0.08);
+    box-shadow: 0 12px 28px -10px rgba(0, 32, 64, 0.1);
   }
   .pane:hover {
-    border-color: #7da3c2;
-    box-shadow: 0 20px 32px -12px rgba(28, 78, 118, 0.12);
+    border-color: #8bb3d1;
+    box-shadow: 0 20px 32px -14px rgba(28, 78, 118, 0.15);
   }
   .pane-header {
     padding: 16px 22px;
-    background: #ffffffcc;
-    border-bottom: 1px solid #cfdfeb;
+    background: #ffffff;
+    border-bottom: 1px solid #e2edf5;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -133,11 +134,7 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    color: #1e4a76;
-  }
-  .pane-icon {
-    display: inline-flex;
-    align-items: center;
+    color: #1e6491;
   }
 
   textarea {
@@ -152,11 +149,10 @@
     line-height: 1.6;
     resize: vertical;
     min-height: 220px;
-    transition: background 0.2s;
   }
   textarea:focus {
     background: #ffffff;
-    box-shadow: inset 0 0 0 2px #a0c4e2;
+    box-shadow: inset 0 0 0 2px #98bbd9;
   }
   textarea::placeholder {
     color: #9bb1c4;
@@ -165,12 +161,12 @@
 
   .toolbar {
     padding: 14px 20px;
-    background: #f8fafd;
+    background: #fafcff;
     display: flex;
     gap: 14px;
     flex-wrap: wrap;
     align-items: center;
-    border-top: 1px solid #e2edf5;
+    border-top: 1px solid #e6eef6;
   }
   button {
     padding: 8px 20px;
@@ -182,17 +178,16 @@
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     background: #eef2f7;
     color: #1e4b6e;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   }
-  button i {
+  button i-lucide {
     width: 18px;
     height: 18px;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
   }
   .btn-primary {
     background: linear-gradient(105deg, #1f6e8c, #2a86b0);
@@ -208,7 +203,6 @@
     background: #b9cfdf;
     transform: none;
     box-shadow: none;
-    color: #eef3f7;
     cursor: not-allowed;
   }
   .btn-secondary {
@@ -246,7 +240,6 @@
   .status.error {
     color: #bc4e2c;
     background: #ffe6e0;
-    border-left: 3px solid #e25822;
   }
   .status.success {
     color: #1e7640;
@@ -265,9 +258,6 @@
     gap: 8px;
     font-weight: 500;
   }
-  #copyBtn {
-    transition: 0.15s;
-  }
 
   @media (min-width: 780px) {
     main {
@@ -282,7 +272,6 @@
     }
     textarea {
       min-height: 500px;
-      resize: vertical;
     }
   }
 
@@ -296,9 +285,6 @@
     button {
       padding: 6px 14px;
       font-size: 0.75rem;
-    }
-    .toolbar {
-      justify-content: space-between;
     }
     .status, .meta {
       font-size: 0.7rem;
@@ -332,7 +318,7 @@
 <main>
   <div class="pane">
     <div class="pane-header">
-      <span><i data-lucide="file-text" class="pane-icon"></i> INPUT — Luau Source</span>
+      <span><i data-lucide="file-text"></i> INPUT — Luau Source</span>
       <span style="font-size:0.7rem; background: none;">raw script</span>
     </div>
     <textarea id="inputCode" placeholder="-- [[ Paste your Luau / Roblox script here ]] --&#10;local Players = game:GetService(&quot;Players&quot;)&#10;function onPlayerAdded(player)&#10;    print(&quot;Hello &quot; .. player.Name)&#10;end&#10;Players.PlayerAdded:Connect(onPlayerAdded)"></textarea>
@@ -345,7 +331,7 @@
 
   <div class="pane">
     <div class="pane-header">
-      <span><i data-lucide="lock-keyhole" class="pane-icon"></i> OUTPUT — VM Obfuscated</span>
+      <span><i data-lucide="lock-keyhole"></i> OUTPUT — VM Obfuscated</span>
       <span style="font-size:0.7rem;">execution ready</span>
     </div>
     <textarea id="outputCode" placeholder="[ obfuscated code will appear here ]" readonly></textarea>
@@ -360,13 +346,17 @@
   <i data-lucide="cpu"></i> VM obfuscation | preserves logic | server-side processing
 </div>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    if (typeof lucide !== 'undefined') {
-      lucide.createIcons();
-    }
-  });
-
   (function(){
+    function renderIcons() {
+      if (typeof lucide !== 'undefined' && lucide.createIcons) {
+        lucide.createIcons();
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      renderIcons();
+    });
+    
     const obfBtn   = document.getElementById('obfBtn');
     const clearBtn = document.getElementById('clearBtn');
     const copyBtn  = document.getElementById('copyBtn');
@@ -376,29 +366,23 @@
     const statusEl = document.getElementById('statusText');
     const metaEl   = document.getElementById('metaText');
 
-    function refreshIcons() {
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-    }
-
     function setStatus(msg, type) {
       statusEl.innerHTML = '';
-      let iconHtml = '';
-      if (type === 'error') iconHtml = '<i data-lucide="alert-circle"></i> ';
-      else if (type === 'success') iconHtml = '<i data-lucide="check-circle"></i> ';
-      else if (type === '') iconHtml = '<i data-lucide="loader-circle"></i> ';
-      else iconHtml = '<i data-lucide="info"></i> ';
-      statusEl.innerHTML = iconHtml + msg;
+      let iconName = 'info';
+      if (type === 'error') iconName = 'alert-circle';
+      else if (type === 'success') iconName = 'check-circle';
+      else if (type === '') iconName = 'loader-circle';
+      else iconName = 'circle';
+      statusEl.innerHTML = `<i data-lucide="${iconName}"></i> ${msg}`;
       statusEl.className = 'status ' + (type || '');
       if (!type) statusEl.classList.add('status');
-      refreshIcons();
+      renderIcons();
     }
 
     function setMeta(meta) {
       if (!meta) { metaEl.innerHTML = ''; return; }
       metaEl.innerHTML = `<i data-lucide="bar-chart-2"></i> ${(meta.inputSize/1024).toFixed(1)}KB → ${(meta.outputSize/1024).toFixed(1)}KB · <i data-lucide="timer"></i> ${meta.processingMs}ms`;
-      refreshIcons();
+      renderIcons();
     }
 
     downloadBtn.addEventListener('click', function() {
@@ -428,12 +412,10 @@
       if (!code) { setStatus('Please enter LuaU code first.', 'error'); return; }
       obfBtn.disabled = true;
       obfBtn.innerHTML = '<i data-lucide="loader-circle"></i> Obfuscating...';
-      refreshIcons();
+      renderIcons();
       setStatus('sending to VM engine...', '');
       outputEl.value = '';
-      if (copyBtn) copyBtn.style.display = 'inline-flex';
       setMeta(null);
-      downloadBtn.disabled = false;
 
       try {
         const res = await fetch('/api/obfuscate', {
@@ -451,7 +433,6 @@
           outputEl.value = data.result;
           setStatus('Obfuscation complete', 'success');
           setMeta(data.meta);
-          copyBtn.style.display = 'inline-flex';
         }
       } catch(e) {
         setStatus('Network error: ' + e.message, 'error');
@@ -459,7 +440,7 @@
       } finally {
         obfBtn.disabled = false;
         obfBtn.innerHTML = '<i data-lucide="shield"></i> Obfuscate';
-        refreshIcons();
+        renderIcons();
       }
     });
 
@@ -468,10 +449,9 @@
       outputEl.value = '';
       setStatus('cleared', '');
       setMeta(null);
-      copyBtn.style.display = 'inline-flex';
       statusEl.innerHTML = '<i data-lucide="circle"></i> ready';
       statusEl.className = 'status';
-      refreshIcons();
+      renderIcons();
     });
 
     copyBtn.addEventListener('click', async function() {
@@ -484,10 +464,10 @@
         await navigator.clipboard.writeText(outputText);
         const orig = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i data-lucide="check"></i> Copied!';
-        refreshIcons();
+        renderIcons();
         setTimeout(() => { 
           copyBtn.innerHTML = orig;
-          refreshIcons();
+          renderIcons();
         }, 1500);
         setStatus('copied to clipboard', 'success');
       } catch(e) {
@@ -517,7 +497,8 @@
     outputObserver.observe(outputEl, { attributes: true, childList: true, subtree: true, characterData: true });
     checkDownloadAvail();
     setInterval(checkDownloadAvail, 500);
-    refreshIcons();
+    
+    renderIcons();
   })();
 </script>
 </body>
