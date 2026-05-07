@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>LuaU VM Obfuscator | Nexus Core</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.344.0/font/lucide.css">
+<title>LuaU VM Obfuscator</title>
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
   * {
     margin: 0;
@@ -13,39 +13,41 @@
   }
 
   body {
-    background: radial-gradient(circle at 10% 20%, #0a0c10, #030507);
-    color: #eceff4;
+    background: linear-gradient(145deg, #f6f9fc 0%, #eef2f8 100%);
+    color: #1a2c3e;
     font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Fira Code', monospace;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    backdrop-filter: blur(0px);
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #1e1f2c;
-    border-radius: 8px;
+    background: #dce5ec;
+    border-radius: 10px;
   }
   ::-webkit-scrollbar-thumb {
-    background: #4b5563;
-    border-radius: 8px;
+    background: #6c8fb3;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4a6f96;
   }
 
   header {
-    padding: 18px 24px;
-    background: rgba(15, 20, 30, 0.75);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(72, 187, 255, 0.3);
+    padding: 20px 28px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 2px solid #cbdde9;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    gap: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -53,210 +55,215 @@
   .logo-area {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     flex-wrap: wrap;
   }
   header h1 {
-    font-size: 1.4rem;
+    font-size: 1.55rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #b3f0ff, #5f9eff);
+    background: linear-gradient(115deg, #1f6392, #3b82b6);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     letter-spacing: -0.3px;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
   .badge {
-    background: rgba(88, 166, 255, 0.2);
-    border: 1px solid #3b82f6;
-    border-radius: 40px;
-    padding: 4px 12px;
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: #7aaef5;
-    backdrop-filter: blur(4px);
+    background: #e6f0fa;
+    border: 1px solid #b9d0e4;
+    border-radius: 60px;
+    padding: 5px 14px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #1c5a8b;
   }
   .vm-chip {
     font-family: monospace;
     font-size: 0.7rem;
-    background: #11161f;
-    padding: 3px 10px;
-    border-radius: 30px;
-    color: #8cb2ff;
+    background: #ecf3f9;
+    padding: 4px 12px;
+    border-radius: 40px;
+    color: #2a628f;
+    font-weight: 500;
   }
 
   main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    padding: 22px 18px;
+    gap: 22px;
+    padding: 28px 24px;
     max-width: 1600px;
     margin: 0 auto;
     width: 100%;
   }
 
   .pane {
-    background: rgba(12, 18, 26, 0.65);
-    backdrop-filter: blur(4px);
-    border-radius: 28px;
-    border: 1px solid rgba(66, 99, 135, 0.4);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(2px);
+    border-radius: 32px;
+    border: 1px solid rgba(72, 120, 160, 0.25);
     overflow: hidden;
-    transition: all 0.2s ease;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: all 0.25s ease;
+    box-shadow: 0 12px 28px -8px rgba(0, 32, 64, 0.08);
   }
   .pane:hover {
-    border-color: rgba(88, 166, 255, 0.6);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+    border-color: #7da3c2;
+    box-shadow: 0 20px 32px -12px rgba(28, 78, 118, 0.12);
   }
   .pane-header {
-    padding: 14px 18px;
-    background: rgba(20, 28, 38, 0.8);
-    border-bottom: 1px solid rgba(72, 110, 150, 0.4);
+    padding: 16px 22px;
+    background: #ffffffcc;
+    border-bottom: 1px solid #cfdfeb;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
   }
   .pane-header span:first-child {
-    font-weight: 600;
-    font-size: 0.85rem;
-    letter-spacing: 0.5px;
-    background: rgba(90, 160, 255, 0.15);
-    padding: 4px 12px;
-    border-radius: 60px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.3px;
+    background: #eef4fc;
+    padding: 6px 16px;
+    border-radius: 80px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 10px;
+    color: #1e4a76;
   }
   .pane-icon {
-    font-size: 1rem;
     display: inline-flex;
     align-items: center;
   }
 
   textarea {
     width: 100%;
-    background: #0b0f17;
-    color: #e2e8f0;
+    background: #fefefe;
+    color: #1a2e42;
     border: none;
     outline: none;
-    padding: 18px;
+    padding: 20px;
     font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     font-size: 0.85rem;
-    line-height: 1.55;
+    line-height: 1.6;
     resize: vertical;
-    min-height: 210px;
+    min-height: 220px;
     transition: background 0.2s;
   }
   textarea:focus {
-    background: #0a0f1a;
-    box-shadow: inset 0 0 0 1px #2c5282;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 2px #a0c4e2;
   }
   textarea::placeholder {
-    color: #2d3e5a;
+    color: #9bb1c4;
     font-style: italic;
   }
 
   .toolbar {
-    padding: 12px 18px;
-    background: rgba(8, 12, 18, 0.7);
+    padding: 14px 20px;
+    background: #f8fafd;
     display: flex;
-    gap: 12px;
+    gap: 14px;
     flex-wrap: wrap;
     align-items: center;
-    border-top: 1px solid rgba(51, 77, 102, 0.4);
+    border-top: 1px solid #e2edf5;
   }
   button {
-    padding: 8px 18px;
-    border-radius: 40px;
+    padding: 8px 20px;
+    border-radius: 48px;
     border: none;
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: #212a36;
-    color: #eef2ff;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    gap: 10px;
+    background: #eef2f7;
+    color: #1e4b6e;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   }
   button i {
-    font-size: 1rem;
-    line-height: 1;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .btn-primary {
-    background: linear-gradient(95deg, #1f6e43, #2c9b5e);
+    background: linear-gradient(105deg, #1f6e8c, #2a86b0);
     color: white;
-    border: none;
-    box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2);
+    box-shadow: 0 4px 12px rgba(36, 113, 163, 0.25);
   }
   .btn-primary:hover {
-    background: linear-gradient(95deg, #288a4f, #34b36b);
+    background: linear-gradient(105deg, #2980a3, #3596c2);
     transform: translateY(-1px);
-    filter: brightness(1.02);
-    box-shadow: 0 8px 18px rgba(46, 160, 67, 0.3);
+    box-shadow: 0 8px 18px rgba(34, 109, 158, 0.3);
   }
   .btn-primary:disabled {
-    background: #2a323f;
+    background: #b9cfdf;
     transform: none;
     box-shadow: none;
-    color: #7f8c9a;
+    color: #eef3f7;
     cursor: not-allowed;
   }
   .btn-secondary {
-    background: #1a2533;
-    border: 1px solid #2d4a6e;
+    background: #e4edf5;
+    border: 1px solid #c7d9e8;
+    color: #235e86;
   }
   .btn-secondary:hover {
-    background: #253545;
-    border-color: #3b7bb3;
+    background: #d6e3ef;
+    border-color: #9eb9d0;
     transform: translateY(-1px);
   }
   .btn-download {
-    background: #2b3b4e;
-    border: 1px solid #488bc2;
-    color: #b9dcff;
+    background: #e1eefb;
+    border: 1px solid #aac6e0;
+    color: #1f5e87;
   }
   .btn-download:hover {
-    background: #2f4b6b;
-    color: white;
+    background: #cfe2f3;
+    color: #0e4468;
   }
   .status {
-    font-size: 0.75rem;
-    background: #0e121b;
-    padding: 4px 12px;
-    border-radius: 50px;
+    font-size: 0.8rem;
+    background: #eef3fc;
+    padding: 5px 16px;
+    border-radius: 60px;
     font-family: monospace;
     margin-left: auto;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    font-weight: 500;
+    color: #2c628b;
   }
   .status.error {
-    color: #ff8a7a;
-    background: #2d1818;
-    border-left: 3px solid #ff5e4a;
+    color: #bc4e2c;
+    background: #ffe6e0;
+    border-left: 3px solid #e25822;
   }
   .status.success {
-    color: #7defb0;
-    background: #103c28;
+    color: #1e7640;
+    background: #e0f5e8;
   }
   .meta {
-    font-size: 0.7rem;
-    color: #8aa9cc;
-    background: #0e1620;
-    padding: 4px 12px;
-    border-radius: 30px;
+    font-size: 0.75rem;
+    color: #4c7399;
+    background: #eef4fa;
+    padding: 5px 14px;
+    border-radius: 60px;
     margin-left: auto;
     font-family: monospace;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    font-weight: 500;
   }
   #copyBtn {
     transition: 0.15s;
@@ -265,8 +272,8 @@
   @media (min-width: 780px) {
     main {
       flex-direction: row;
-      gap: 22px;
-      padding: 28px 30px;
+      gap: 26px;
+      padding: 32px 32px;
     }
     .pane {
       flex: 1;
@@ -274,14 +281,14 @@
       flex-direction: column;
     }
     textarea {
-      min-height: 480px;
+      min-height: 500px;
       resize: vertical;
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 560px) {
     header {
-      padding: 12px 16px;
+      padding: 14px 18px;
     }
     .pane-header span:first-child {
       font-size: 0.75rem;
@@ -294,217 +301,225 @@
       justify-content: space-between;
     }
     .status, .meta {
-      font-size: 0.65rem;
+      font-size: 0.7rem;
     }
   }
 
   .footer-meta {
     text-align: center;
-    font-size: 0.65rem;
-    padding: 12px;
-    color: #526277;
-    border-top: 1px solid #1b2938;
-    margin-top: 8px;
+    font-size: 0.7rem;
+    padding: 14px;
+    color: #5c7f9c;
+    border-top: 1px solid #d0e0ec;
+    margin-top: 6px;
+    background: #fefeffaa;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-  }
-  .flex-spacer {
-    flex: 1;
-  }
-  i.lucide {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    gap: 12px;
   }
 </style>
 </head>
 <body>
 <header>
   <div class="logo-area">
-    <h1><i class="lucide-zap"></i> VM·OBFUSCATOR</h1>
+    <h1><i data-lucide="zap" class="lucide-icon"></i> VM·OBFUSCATOR</h1>
     <div class="badge">LuaU Core</div>
     <div class="vm-chip">VM-based · Server-side</div>
   </div>
-  <span style="font-size: 0.7rem; opacity: 0.7;"><i class="lucide-lock"></i> opaque bytecode</span>
+  <span style="font-size: 0.75rem; opacity: 0.8;"><i data-lucide="lock" class="lucide-icon"></i> opaque bytecode</span>
 </header>
 <main>
   <div class="pane">
     <div class="pane-header">
-      <span><i class="lucide-file-text pane-icon"></i> INPUT — Luau Source</span>
+      <span><i data-lucide="file-text" class="lucide-icon pane-icon"></i> INPUT — Luau Source</span>
       <span style="font-size:0.7rem; background: none;">raw script</span>
     </div>
     <textarea id="inputCode" placeholder="-- [[ Paste your Luau / Roblox script here ]] --&#10;local Players = game:GetService(&quot;Players&quot;)&#10;function onPlayerAdded(player)&#10;    print(&quot;Hello &quot; .. player.Name)&#10;end&#10;Players.PlayerAdded:Connect(onPlayerAdded)"></textarea>
     <div class="toolbar">
-      <button class="btn-primary" id="obfBtn"><i class="lucide-shield"></i> Obfuscate</button>
-      <button class="btn-secondary" id="clearBtn"><i class="lucide-trash-2"></i> Clear</button>
-      <span class="status" id="statusText"><i class="lucide-circle"></i> ready</span>
+      <button class="btn-primary" id="obfBtn"><i data-lucide="shield"></i> Obfuscate</button>
+      <button class="btn-secondary" id="clearBtn"><i data-lucide="trash-2"></i> Clear</button>
+      <span class="status" id="statusText"><i data-lucide="circle"></i> ready</span>
     </div>
   </div>
 
   <div class="pane">
     <div class="pane-header">
-      <span><i class="lucide-lock-keyhole pane-icon"></i> OUTPUT — VM Obfuscated</span>
+      <span><i data-lucide="lock-keyhole" class="lucide-icon pane-icon"></i> OUTPUT — VM Obfuscated</span>
       <span style="font-size:0.7rem;">execution ready</span>
     </div>
     <textarea id="outputCode" placeholder="[ obfuscated code will appear here ]" readonly></textarea>
     <div class="toolbar">
-      <button class="btn-secondary" id="copyBtn"><i class="lucide-clipboard"></i> Copy</button>
-      <button class="btn-download" id="downloadBtn"><i class="lucide-download"></i> Download .lua</button>
+      <button class="btn-secondary" id="copyBtn"><i data-lucide="clipboard"></i> Copy</button>
+      <button class="btn-download" id="downloadBtn"><i data-lucide="download"></i> Download .lua</button>
       <span class="meta" id="metaText"></span>
     </div>
   </div>
 </main>
 <div class="footer-meta">
-  <i class="lucide-cpu"></i> VM obfuscation | preserves logic | server-side processing
+  <i data-lucide="cpu"></i> VM obfuscation | preserves logic | server-side processing
 </div>
 <script>
-(function(){
-  const obfBtn   = document.getElementById('obfBtn');
-  const clearBtn = document.getElementById('clearBtn');
-  const copyBtn  = document.getElementById('copyBtn');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const inputEl  = document.getElementById('inputCode');
-  const outputEl = document.getElementById('outputCode');
-  const statusEl = document.getElementById('statusText');
-  const metaEl   = document.getElementById('metaText');
-
-  function setStatus(msg, type) {
-    statusEl.innerHTML = '';
-    const iconMap = {
-      'error': '<i class="lucide-alert-circle"></i> ',
-      'success': '<i class="lucide-check-circle"></i> ',
-      '': '<i class="lucide-loader-2"></i> '
-    };
-    let icon = iconMap[type] || '<i class="lucide-info"></i> ';
-    if (type === '') icon = '<i class="lucide-loader-circle"></i> ';
-    statusEl.innerHTML = icon + msg;
-    statusEl.className = 'status ' + (type || '');
-    if (!type) statusEl.classList.add('status');
-  }
-
-  function setMeta(meta) {
-    if (!meta) { metaEl.innerHTML = ''; return; }
-    metaEl.innerHTML = `<i class="lucide-bar-chart-2"></i> ${(meta.inputSize/1024).toFixed(1)}KB → ${(meta.outputSize/1024).toFixed(1)}KB · <i class="lucide-timer"></i> ${meta.processingMs}ms`;
-  }
-
-  downloadBtn.addEventListener('click', function() {
-    const obfuscatedCode = outputEl.value;
-    if (!obfuscatedCode || obfuscatedCode.trim() === "") {
-      setStatus("No obfuscated output to download", "error");
-      return;
+  // initialize lucide icons after DOM ready
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
     }
-    const blob = new Blob([obfuscatedCode], {type: "text/plain"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    const timestamp = new Date().toISOString().slice(0,19).replace(/:/g, '-');
-    a.download = `obfuscated_${timestamp}.lua`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    setStatus("Downloaded as .lua file", "success");
-    setTimeout(() => {
-      if (statusEl.innerHTML.includes("Downloaded")) setStatus("Done", "success");
-    }, 1500);
   });
 
-  obfBtn.addEventListener('click', async function() {
-    const code = inputEl.value.trim();
-    if (!code) { setStatus('Please enter LuaU code first.', 'error'); return; }
-    obfBtn.disabled = true;
-    obfBtn.innerHTML = '<i class="lucide-loader-circle"></i> Obfuscating...';
-    setStatus('sending to VM engine...', '');
-    outputEl.value = '';
-    if (copyBtn) copyBtn.style.display = 'inline-flex';
-    setMeta(null);
-    downloadBtn.disabled = false;
+  (function(){
+    const obfBtn   = document.getElementById('obfBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const copyBtn  = document.getElementById('copyBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const inputEl  = document.getElementById('inputCode');
+    const outputEl = document.getElementById('outputCode');
+    const statusEl = document.getElementById('statusText');
+    const metaEl   = document.getElementById('metaText');
 
-    try {
-      const res = await fetch('/api/obfuscate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        const lineInfo = data.line ? ` (line ${data.line})` : '';
-        setStatus('Error: ' + data.error + lineInfo, 'error');
-        outputEl.value = '';
-        setMeta(null);
-      } else {
-        outputEl.value = data.result;
-        setStatus('Obfuscation complete', 'success');
-        setMeta(data.meta);
-        copyBtn.style.display = 'inline-flex';
+    function refreshIcons() {
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
       }
-    } catch(e) {
-      setStatus('Network error: ' + e.message, 'error');
+    }
+
+    function setStatus(msg, type) {
+      statusEl.innerHTML = '';
+      let iconHtml = '';
+      if (type === 'error') iconHtml = '<i data-lucide="alert-circle"></i> ';
+      else if (type === 'success') iconHtml = '<i data-lucide="check-circle"></i> ';
+      else if (type === '') iconHtml = '<i data-lucide="loader-circle"></i> ';
+      else iconHtml = '<i data-lucide="info"></i> ';
+      statusEl.innerHTML = iconHtml + msg;
+      statusEl.className = 'status ' + (type || '');
+      if (!type) statusEl.classList.add('status');
+      refreshIcons();
+    }
+
+    function setMeta(meta) {
+      if (!meta) { metaEl.innerHTML = ''; return; }
+      metaEl.innerHTML = `<i data-lucide="bar-chart-2"></i> ${(meta.inputSize/1024).toFixed(1)}KB → ${(meta.outputSize/1024).toFixed(1)}KB · <i data-lucide="timer"></i> ${meta.processingMs}ms`;
+      refreshIcons();
+    }
+
+    downloadBtn.addEventListener('click', function() {
+      const obfuscatedCode = outputEl.value;
+      if (!obfuscatedCode || obfuscatedCode.trim() === "") {
+        setStatus("No obfuscated output to download", "error");
+        return;
+      }
+      const blob = new Blob([obfuscatedCode], {type: "text/plain"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const timestamp = new Date().toISOString().slice(0,19).replace(/:/g, '-');
+      a.download = `obfuscated_${timestamp}.lua`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setStatus("Downloaded as .lua file", "success");
+      setTimeout(() => {
+        if (statusEl.innerHTML.includes("Downloaded")) setStatus("Done", "success");
+      }, 1500);
+    });
+
+    obfBtn.addEventListener('click', async function() {
+      const code = inputEl.value.trim();
+      if (!code) { setStatus('Please enter LuaU code first.', 'error'); return; }
+      obfBtn.disabled = true;
+      obfBtn.innerHTML = '<i data-lucide="loader-circle"></i> Obfuscating...';
+      refreshIcons();
+      setStatus('sending to VM engine...', '');
       outputEl.value = '';
-    } finally {
-      obfBtn.disabled = false;
-      obfBtn.innerHTML = '<i class="lucide-shield"></i> Obfuscate';
-    }
-  });
+      if (copyBtn) copyBtn.style.display = 'inline-flex';
+      setMeta(null);
+      downloadBtn.disabled = false;
 
-  clearBtn.addEventListener('click', function() {
-    inputEl.value = '';
-    outputEl.value = '';
-    setStatus('cleared', '');
-    setMeta(null);
-    copyBtn.style.display = 'inline-flex';
-    statusEl.innerHTML = '<i class="lucide-circle"></i> ready';
-    statusEl.className = 'status';
-  });
+      try {
+        const res = await fetch('/api/obfuscate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          const lineInfo = data.line ? ` (line ${data.line})` : '';
+          setStatus('Error: ' + data.error + lineInfo, 'error');
+          outputEl.value = '';
+          setMeta(null);
+        } else {
+          outputEl.value = data.result;
+          setStatus('Obfuscation complete', 'success');
+          setMeta(data.meta);
+          copyBtn.style.display = 'inline-flex';
+        }
+      } catch(e) {
+        setStatus('Network error: ' + e.message, 'error');
+        outputEl.value = '';
+      } finally {
+        obfBtn.disabled = false;
+        obfBtn.innerHTML = '<i data-lucide="shield"></i> Obfuscate';
+        refreshIcons();
+      }
+    });
 
-  copyBtn.addEventListener('click', async function() {
-    const outputText = outputEl.value;
-    if (!outputText) {
-      setStatus('nothing to copy', 'error');
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(outputText);
-      const orig = copyBtn.innerHTML;
-      copyBtn.innerHTML = '<i class="lucide-check"></i> Copied!';
-      setTimeout(() => { copyBtn.innerHTML = orig; }, 1500);
-      setStatus('copied to clipboard', 'success');
-    } catch(e) {
-      outputEl.select();
-      document.execCommand('copy');
-      setStatus('copied (fallback)', 'success');
-    }
-  });
+    clearBtn.addEventListener('click', function() {
+      inputEl.value = '';
+      outputEl.value = '';
+      setStatus('cleared', '');
+      setMeta(null);
+      copyBtn.style.display = 'inline-flex';
+      statusEl.innerHTML = '<i data-lucide="circle"></i> ready';
+      statusEl.className = 'status';
+      refreshIcons();
+    });
 
-  inputEl.addEventListener('keydown', function(e) {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const s = this.selectionStart, end = this.selectionEnd;
-      this.value = this.value.substring(0, s) + '  ' + this.value.substring(end);
-      this.selectionStart = this.selectionEnd = s + 2;
-    }
-  });
+    copyBtn.addEventListener('click', async function() {
+      const outputText = outputEl.value;
+      if (!outputText) {
+        setStatus('nothing to copy', 'error');
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(outputText);
+        const orig = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i data-lucide="check"></i> Copied!';
+        refreshIcons();
+        setTimeout(() => { 
+          copyBtn.innerHTML = orig;
+          refreshIcons();
+        }, 1500);
+        setStatus('copied to clipboard', 'success');
+      } catch(e) {
+        outputEl.select();
+        document.execCommand('copy');
+        setStatus('copied (fallback)', 'success');
+      }
+    });
 
-  let statusTimeout;
-  function flashStatus(msg, type) {
-    if (statusTimeout) clearTimeout(statusTimeout);
-    setStatus(msg, type);
-  }
+    inputEl.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const s = this.selectionStart, end = this.selectionEnd;
+        this.value = this.value.substring(0, s) + '  ' + this.value.substring(end);
+        this.selectionStart = this.selectionEnd = s + 2;
+      }
+    });
 
-  function checkDownloadAvail() {
-    if (outputEl.value.trim() === "") {
-      downloadBtn.style.opacity = '0.7';
-    } else {
-      downloadBtn.style.opacity = '1';
+    function checkDownloadAvail() {
+      if (outputEl.value.trim() === "") {
+        downloadBtn.style.opacity = '0.6';
+      } else {
+        downloadBtn.style.opacity = '1';
+      }
     }
-  }
-  const outputObserver = new MutationObserver(() => checkDownloadAvail());
-  outputObserver.observe(outputEl, { attributes: true, childList: true, subtree: true, characterData: true });
-  checkDownloadAvail();
-  setInterval(checkDownloadAvail, 500);
-})();
+    const outputObserver = new MutationObserver(() => checkDownloadAvail());
+    outputObserver.observe(outputEl, { attributes: true, childList: true, subtree: true, characterData: true });
+    checkDownloadAvail();
+    setInterval(checkDownloadAvail, 500);
+    refreshIcons();
+  })();
 </script>
 </body>
 </html>
